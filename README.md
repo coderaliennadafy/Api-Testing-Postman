@@ -1,2 +1,3 @@
-# Api-Testing-Postman
-API testing using Postman (GET &amp; POST requests, status code validation)
+GET users
+POST user
+Status codes (200 / 201)
