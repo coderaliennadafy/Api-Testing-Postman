@@ -26,8 +26,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "postman-echo.com/get",
+        "https://postman-echo.com/get"
           "host": [
             "postman-echo",
             "com"
@@ -69,7 +68,7 @@
           }
         },
         "url": {
-          "raw": "postman-echo.com/post",
+          "https://postman-echo.com/post"
           "host": [
             "postman-echo",
             "com"
