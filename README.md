@@ -38,6 +38,16 @@ This mini project demonstrates basic API testing using Postman.
 - Send data using JSON body
 - Validate status code = 201
 
+## Tests Included
+- Status code validation
+- Response body validation
+- Negative testing
+- Request chaining
+
+## How to Run
+1. Import collection
+2. Run requests in order
+3. 
 ##  Example Tests
 
 ```javascript
