@@ -1,5 +1,19 @@
 # API Testing with Postman
 
+## Features
+- API Testing with GET & POST
+- Response validation
+- Negative testing
+- Request chaining
+
+## Project Structure
+- postman/
+  - collection.json
+
+## How to use
+1. Import collection in Postman
+2. Run requests
+
 This mini project demonstrates basic API testing using Postman.
 
 ##  What I learned
