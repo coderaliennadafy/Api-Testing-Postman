@@ -54,3 +54,5 @@ This mini project demonstrates basic API testing using Postman.
 pm.test("Successful POST request", function () {
     pm.expect(pm.response.code).to.be.oneOf([200, 201]);
 });
+
+This API does not validate input, so negative scenarios are limited.

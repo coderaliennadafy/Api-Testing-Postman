@@ -1,0 +1,437 @@
+{
+  "info": {
+    "_postman_id": "ff31dd72-5533-4908-a133-73226e0eb79d",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection.\n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests  \n• Test your API in real-world scenarios  \n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53529684",
+    "_collection_link": "https://go.postman.co/collection/53529684-ff31dd72-5533-4908-a133-73226e0eb79d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get Users",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is array\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an(\"array\");",
+              "});",
+              "",
+              "pm.test(\"Users list is not empty\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.length).to.be.above(0);",
+              "});",
+              "",
+              "pm.test(\"User has required fields\", function () {",
+              "    var jsonData = pm.response.json();",
+              "",
+              "    pm.expect(jsonData[0]).to.have.property(\"id\");",
+              "    pm.expect(jsonData[0]).to.have.property(\"name\");",
+              "    pm.expect(jsonData[0]).to.have.property(\"email\");",
+              "});",
+              "",
+              "pm.test(\"ID is a number \",function() {",
+              "    var jsonData = pm.response.json();",
+              "",
+              "    pm.expect(jsonData[0].id).to.be.a('number');",
+              "});",
+              "",
+              "pm.test(\"First user has id and name\", function () { ",
+              "    var jsonData = pm.response.json();",
+              "",
+              "    pm.expect(jsonData[0].id).to.exist;",
+              "    pm.expect(jsonData[0].name).to.exist;",
+              "});",
+              "",
+              "pm.test(\"User has email\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData[0].email).to.exist;",
+              "});",
+              "",
+              "pm.test(\"Email contains @\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData[0].email).to.include(\"@\");",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post Users",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has name\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.name).to.eql(\"David\");\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "pm.environment.set(\"userId\", jsonData.id);\r",
+              "\r",
+              "pm.test(\"ID is created\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.exist;\r",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"David\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "POST Invalid User Negative test (data invalid )",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Note: Using JSONPlaceholder API which does not validate input\r",
+              "pm.test(\"API does not validate input (always returns 201)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Empty Body Negative test (edge case)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// NOTE: API does not validate empty body\r",
+              "pm.test(\"API accepts empty body (returns 201)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Wrong Type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// NOTE: API does not validate data types\r",
+              "pm.test(\"API accepts wrong data types (returns 201)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": 123\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post Edge Cases",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// NOTE: API does not validate edge case inputs\r",
+              "pm.test(\"API accepts edge case inputs (returns 201)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has id\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 2s\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Special Characters",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// NOTE: API does not validate special characters\r",
+              "pm.test(\"API accepts special characters (returns 201)\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"@@@###$$$\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User By ID (Chaining requests)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"User ID matches\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.eql(1);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/1",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
