@@ -141,6 +141,11 @@
               "\r",
               "pm.test(\"Response time < 2s\", function () {\r",
               "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Name is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.name).to.eql(\"David\");\r",
               "});"
             ],
             "type": "text/javascript",
@@ -436,6 +441,11 @@
               "pm.test(\"ID is a number\", function () {\r",
               "    var jsonData = pm.response.json();\r",
               "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User has name\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.name).to.exist;\r",
               "});"
             ],
             "type": "text/javascript",
