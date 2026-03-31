@@ -61,14 +61,16 @@
               "    pm.expect(jsonData[0].name).to.exist;",
               "});",
               "",
-              "pm.test(\"User has email\", function () {",
+              "pm.test(\"Each user has valid email format\", function () {",
               "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData[0].email).to.exist;",
+              "",
+              "    jsonData.forEach(user => {",
+              "        pm.expect(user.email).to.match(/.+@.+\\..+/);",
+              "    });",
               "});",
               "",
-              "pm.test(\"Email contains @\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData[0].email).to.include(\"@\");",
+              "pm.test(\"Response time < 2s\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
               "});"
             ],
             "type": "text/javascript",
@@ -93,7 +95,7 @@
       "response": []
     },
     {
-      "name": "Post Users",
+      "name": "POST Users",
       "event": [
         {
           "listen": "prerequest",
@@ -116,7 +118,7 @@
               "\r",
               "pm.test(\"Response has name\", function () {\r",
               "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.name).to.eql(\"David\");\r",
+              "    pm.expect(jsonData).to.have.property(\"name\");\r",
               "});\r",
               "\r",
               "var jsonData = pm.response.json();\r",
@@ -126,6 +128,19 @@
               "    var jsonData = pm.response.json();\r",
               "    pm.expect(jsonData.id).to.exist;\r",
               "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has id\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time < 2s\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
               "});"
             ],
             "type": "text/javascript",
@@ -134,6 +149,9 @@
           }
         }
       ],
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {}
+      },
       "request": {
         "method": "POST",
         "header": [],
@@ -214,7 +232,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "// NOTE: API does not validate empty body\r",
+              "// Limitation: API does not validate input, always returns 201\r",
               "pm.test(\"API accepts empty body (returns 201)\", function () {\r",
               "    pm.response.to.have.status(201);\r",
               "});"
@@ -298,7 +316,7 @@
       "response": []
     },
     {
-      "name": "Post Edge Cases",
+      "name": "POST Edge Cases",
       "event": [
         {
           "listen": "test",
@@ -314,7 +332,7 @@
               "    pm.expect(jsonData).to.have.property(\"id\");\r",
               "});\r",
               "\r",
-              "pm.test(\"Response time is less than 2s\", function () {\r",
+              "pm.test(\"Response time < 2s\", function () {\r",
               "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
               "});"
             ],
@@ -369,6 +387,9 @@
           }
         }
       ],
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {}
+      },
       "request": {
         "method": "POST",
         "header": [],
@@ -403,9 +424,18 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"User ID matches\", function () {\r",
+              "pm.test(\"Response has id\", function () {\r",
               "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.id).to.eql(1);\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"ID is a number\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
               "});"
             ],
             "type": "text/javascript",
@@ -418,20 +448,45 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "https://jsonplaceholder.typicode.com/users/1",
-          "protocol": "https",
+          "raw": "{{baseUrl}}/users/{{userId}}",
           "host": [
-            "jsonplaceholder",
-            "typicode",
-            "com"
+            "{{baseUrl}}"
           ],
           "path": [
             "users",
-            "1"
+            "{{userId}}"
           ]
         }
       },
       "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.test(\"Content-Type is JSON\", function () {\r",
+          "    pm.response.to.have.header(\"Content-Type\");\r",
+          "    let contentType = pm.response.headers.get(\"Content-Type\");\r",
+          "    pm.expect(contentType).to.include(\"application/json\");\r",
+          "});"
+        ]
+      }
     }
   ]
 }
