@@ -141,7 +141,9 @@
               "pm.test(\"Name is correct\", function () {\r",
               "    var jsonData = pm.response.json();\r",
               "    pm.expect(jsonData.name).to.eql(\"David\");\r",
-              "});"
+              "});\r",
+              "\r",
+              "pm.environment.set(\"userId\", 1);"
             ],
             "type": "text/javascript",
             "packages": {},
