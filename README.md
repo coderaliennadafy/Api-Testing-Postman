@@ -1,58 +1,155 @@
-# API Testing with Postman
+# API Testing Project – JSONPlaceholder
 
-## Features
-- API Testing with GET & POST
-- Response validation
-- Negative testing
-- Request chaining
+##  Project Overview
 
-## Project Structure
-- postman/
-  - collection.json
+This project demonstrates API testing using Postman on a sample REST API. It covers fundamental concepts of API testing including request validation, response validation, negative testing, and handling edge cases.
 
-## How to use
-1. Import collection in Postman
-2. Run requests
+The goal of this project is to showcase practical QA skills in testing RESTful APIs and validating different scenarios in a structured and professional way.
 
-This mini project demonstrates basic API testing using Postman.
+---
 
-##  What I learned
+##  Tools & Technologies
 
-- Sending GET requests
-- Sending POST requests
-- Working with JSON body
-- Writing tests using JavaScript
-- Validating status codes
+* Postman
+* REST API
+* JavaScript (Postman test scripts)
 
-## Tools
+---
 
-- Postman
+##  API Used
 
-##  Test Scenarios
+This project uses **JSONPlaceholder**, a free fake REST API for testing and prototyping.
 
-### GET Request
-- Fetch data from API
-- Validate status code = 200
+⚠️ **Important Note:**
+JSONPlaceholder is a mock API:
 
-### POST Request
-- Send data using JSON body
-- Validate status code = 201
+* It does NOT persist data
+* POST, PUT, DELETE requests do not actually modify the database
+* IDs returned in POST requests are fake and not retrievable later
 
-## Tests Included
-- Status code validation
-- Response body validation
-- Negative testing
-- Request chaining
+Because of this limitation, static IDs are used for request chaining instead of dynamic ones.
 
-## How to Run
-1. Import collection
-2. Run requests in order
-3. 
-##  Example Tests
+---
 
-```javascript
-pm.test("Successful POST request", function () {
-    pm.expect(pm.response.code).to.be.oneOf([200, 201]);
-});
+##  Collection Structure
 
-This API does not validate input, so negative scenarios are limited.
+### 🔹 GET Requests
+
+* Get all users
+* Validate:
+
+  * Status code (200)
+  * Response format (array)
+  * Required fields (id, name, email)
+  * Data types
+  * Email format
+  * Response time
+
+---
+
+### 🔹 POST Requests
+
+* Create new user
+* Validate:
+
+  * Status code (201)
+  * Response contains name and id
+  * Response format (JSON)
+  * Response time
+  * Data correctness
+
+---
+
+### 🔹 Negative Testing
+
+* Invalid data (empty name)
+* Empty request body
+* Wrong data types (number instead of string)
+* Special characters
+* Edge cases (long input)
+
+⚠️ Note: API accepts all inputs due to lack of validation
+
+---
+
+### 🔹 GET by ID (Chaining Requests)
+
+* Retrieve user using `userId` from environment
+* Validations:
+
+  * Status code (200)
+  * ID exists and is a number
+  * Name exists
+
+⚠️ Static ID is used because API does not persist created users
+
+---
+
+### 🔹 PUT Request
+
+* Update user data
+* Validate:
+
+  * Status code (200)
+  * Updated name is correct
+
+---
+
+### 🔹 DELETE Request
+
+* Delete user
+* Validate:
+
+  * Status code (200)
+
+---
+
+##  Environment Variables
+
+The project uses environment variables for flexibility:
+
+```
+baseUrl = https://jsonplaceholder.typicode.com
+userId = 1
+```
+
+* `baseUrl`: API base endpoint
+* `userId`: Static ID used for chaining requests
+
+---
+
+##  Test Coverage
+
+This project includes:
+
+* Functional testing
+* Data validation
+* Schema validation (basic)
+* Negative testing
+* Edge case testing
+* Performance check (response time)
+
+---
+
+##  Limitations
+
+Due to the nature of JSONPlaceholder:
+
+* No real database operations occur
+* Cannot fully test real-world scenarios like authentication, authorization, or data persistence
+* Chaining requests is simulated using static values
+
+---
+
+##  Future Improvements
+
+* Test a real API with authentication
+* Add automated testing using Newman
+* Integrate with CI/CD pipeline
+* Expand test coverage (headers, security, etc.)
+
+---
+
+##  Conclusion
+
+This project demonstrates a solid foundation in API testing using Postman. It includes structured test cases, validations, and different testing scenarios, making it suitable for showcasing QA skills in a portfolio or CV.
