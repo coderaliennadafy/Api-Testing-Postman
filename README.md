@@ -143,8 +143,7 @@ Due to the nature of JSONPlaceholder:
 
 ##  Future Improvements
 
-* Test a real API with authentication
-* Add automated testing using Newman
+* Test a real API advanced testing
 * Integrate with CI/CD pipeline
 * Expand test coverage (headers, security, etc.)
 
